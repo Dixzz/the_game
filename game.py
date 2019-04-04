@@ -13,12 +13,13 @@ y1 = 0
 width = 40
 x2 =random.randint(0, 800 - width)
 y2 = 0
-vel_obj = 20
+vel_obj = 5
+count=0
 # coordinates are on top left of origin as well as object
 
 
 # coll
-status = False
+
 
 height = 60
 vel = 20
@@ -38,6 +39,10 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+   # print(count)
+
+    print(vel_obj)
+
 
     if y1 <= 800 and x1 <= 800:
 
@@ -49,6 +54,12 @@ while run:
         y1 = y1 - vel_obj
 
         # x1 = random.randint(0, 800 - width)
+        # count
+    if y1 >= 799 or y2 >= 799:
+        count += 1
+    if count >= 20:
+        vel_obj += 1
+        count = 0
 
     if y2 <= 800:
         y2 += vel_obj
@@ -61,8 +72,8 @@ while run:
         y1 += vel_obj
         x1 += vel_obj / 2
     else:
-        y1 = 0
-        x1 = random.randint(0, 800 - width)
+        y1 = random.randint(0,400)
+        x1 = 0#random.randint(0, 800 - width)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a] and x > vel:  # left right move
@@ -73,32 +84,17 @@ while run:
 
 
 
+    #collision
 
 
-   # if x1 >= x and x1 <= x + width and y1 >= y and y1 <= y + height :#or x2 >= x and x2 <= x + width and y2 >= y and y2 <= y + height:
-
-        '''if x2 >= x and x2 <= x + width and y2 >= y and y2 <= y + height:
-            collision = collision + 1
-            print(collision)
-        else:
-            collision = collision + 1
-            print(collision)
-    if x2 >= x and x2 <= x + width and y2 >= y and y2 <= y + height:
-        if x1 >= x and x1 <= x + width and y1 >= y and y1 <= y + height:
-            collision = collision + 1
-            print(collision)
-        else:
-            collision = collision + 1
-            print(collision)
-            '''
     if x1 >= x and x1 <= x + width and y1 >= y and y1 <= y + height:
         collision+=1
-        print(collision)
+        #print(collision)
 
     elif  x2 >= x and x2 <= x + width and y2 >= y and y2 <= y + height:
         collision+=1
         y2=0
-        print(collision)
+        #print(collision)
 
 
 
@@ -109,14 +105,20 @@ while run:
         print("End")
 
         run = False
-        collision = 0
+        #collision = 0
 
-    win.fill((255,255,255))
-    pygame.draw.rect(win, (10,10,10), (x, y, width, height))  # player
+
+
+
+
+
+
+    win.fill((255, 255, 255))
+    pygame.draw.rect(win, (0, 255, 255), (x, y, width, height))  # player
 
     pygame.draw.rect(win, (255, 0, 0), (x1, y1, width, height))  # slant
 
-    pygame.draw.rect(win, (255, 255, 0), (x2, y2, width, height))  # str
+    pygame.draw.rect(win, (255, 255, 0), (x2, y2, width, height))  # str yello
 
     pygame.display.update()
 
