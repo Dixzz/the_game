@@ -11,7 +11,7 @@ collision = 0
 x1 = 50
 y1 = 0
 width = 40
-x2 =100 #random.randint(0, 800 - width)
+x2 =random.randint(0, 800 - width)
 y2 = 0
 vel_obj = 20
 # coordinates are on top left of origin as well as object
