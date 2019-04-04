@@ -111,8 +111,8 @@ while run:
         run = False
         collision = 0
 
-    win.fill((0, 0, 0))
-    pygame.draw.rect(win, (255, 255, 255), (x, y, width, height))  # player
+    win.fill((255,255,255))
+    pygame.draw.rect(win, (10,10,10), (x, y, width, height))  # player
 
     pygame.draw.rect(win, (255, 0, 0), (x1, y1, width, height))  # slant
 
