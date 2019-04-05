@@ -28,6 +28,12 @@ y = 800-height
 
 run = True
 
+
+
+# bnana bounce' nahi na ho raha'
+# are 2 blck tch hua to ek block ake pstion ko dur krnah bs karke bata b
+
+
 while run:
     pygame.time.delay(10)
     for event in pygame.event.get():
@@ -76,12 +82,24 @@ while run:
         x += vel
 
 
+
+
+    #collision
+
+
     if x1 >= x and x1 <= x + width and y1 >= y and y1 <= y + height:
         collision+=1
+        #print(collision)
 
     elif  x2 >= x and x2 <= x + width and y2 >= y and y2 <= y + height:
         collision+=1
-        y2=0  
+        y2=0
+        #print(collision)
+
+
+
+
+
 
     if collision == 7:
         print("End")
@@ -91,8 +109,14 @@ while run:
 
 
     win.fill((255, 255, 255))
-    pygame.draw.rect(win, (15, 15, 15), (x, y, width, height))  # player
+    #pygame.draw.rect(win, (15, 15, 15), (x, y, width, height))  # player
 
+    b=pygame.sprite.Sprite()
+    b.image=pygame.image.load("dina.png").convert()
+    b.rect=b.image.get_rect()
+    b.rect.topleft=[0,0]
+    win.blit(b.image,b.rect)
+    
     pygame.draw.rect(win, (255, 0, 0), (x1, y1, width, height))  # slant
 
     pygame.draw.rect(win, (255, 255, 0), (x2, y2, width, height))  # str yello
@@ -100,5 +124,7 @@ while run:
     pygame.display.update()
 
     # pygame.draw.rect(win, (255, 0, 0), (x / 2, y / 2, width / 2, height / 2))
+# stop ni hua? i?are 20 collsionms k baad hua na an, bounce ni ha karte hai wakata
+
 
 pygame.quit()
