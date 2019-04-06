@@ -15,18 +15,25 @@ x2 =random.randint(0, 800 - width)
 y2 = 0
 vel_obj = 5
 count=0
+temp=0
 # coordinates are on top left of origin as well as object
 
 
 # coll
 
-
+shoot=False
 height = 60
 vel = 20
 x = 400
 y = 800-height
 
 run = True
+
+#bullet
+xb=int(x+width/2)
+yb=y
+vb=15
+hits=0
 
 
 
@@ -35,13 +42,13 @@ run = True
 
 
 while run:
-    pygame.time.delay(10)
+    pygame.time.delay(20)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-   # print(count)
+    #print("count=",count)
 
-    print(vel_obj)
+    #print("velocity=",vel_obj)
 
 
     if y1 <= 800 and x1 <= 800:
@@ -78,8 +85,30 @@ while run:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a] and x > vel:  # left right move
         x -= vel
+        xb = int(x + width / 2)
+
+
     if keys[pygame.K_d] and x < 800 - width - 10:
         x += vel
+        xb = int(x + width / 2)
+
+
+    if keys[pygame.K_SPACE]:
+        temp=xb
+        shoot =True
+
+    if shoot:
+        #yb=int(800-height)
+        yb=yb-vb
+        xb=temp
+        if yb<0:
+            yb=y
+            xb=int(x+width/2)
+            shoot=False
+
+
+
+
 
 
 
@@ -89,12 +118,28 @@ while run:
 
     if x1 >= x and x1 <= x + width and y1 >= y and y1 <= y + height:
         collision+=1
-        #print(collision)
+        print("collsion=",collision)
 
     elif  x2 >= x and x2 <= x + width and y2 >= y and y2 <= y + height:
         collision+=1
         y2=0
-        #print(collision)
+        print("collsion=",collision)
+
+    #bullet colli
+    if yb>y1 and yb<y1+height and xb>=x1 and xb<=x1+width:
+        hits=hits+1
+        y1=random.randint(0,400)
+        x1=random.randint(0,800)
+        print("hits=",hits)
+    if yb > y2 and yb < y2 + height and xb >= x2 and xb <= x2 + width:
+        hits=hits+1
+        y2=0
+        x2=random.randint(0,800)
+        print("hits=", hits)
+
+
+
+
 
 
 
@@ -119,6 +164,8 @@ while run:
     pygame.draw.rect(win, (255, 0, 0), (x1, y1, width, height))  # slant
 
     pygame.draw.rect(win, (255, 255, 0), (x2, y2, width, height))  # str yello
+
+    pygame.draw.circle(win,(0,0,0),(xb,yb),10)   #bullet
 
     pygame.display.update()
 
