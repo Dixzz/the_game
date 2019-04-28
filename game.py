@@ -1,31 +1,32 @@
 import pygame
 import random
+
 import time
 
 clock = pygame.time.Clock()
 pygame.init()
-win = pygame.display.set_mode((800, 800))
+scrw=800
+scrh=800
+win = pygame.display.set_mode((scrw,scrh))
 pygame.display.set_caption("first game")
 coll = False
 collision = 0
 x1 = 50
 y1 = 0
 width = 40
-x2 =random.randint(0, 800 - width)
+x2 =random.randint(0, scrw - width)
 y2 = 0
-vel_obj = 5
+vel_obj = 10
 count=0
 temp=0
-# coordinates are on top left of origin as well as object
 
-
-# coll
 
 shoot=False
 height = 60
 vel = 20
 x = 400
-y = 800-height
+y = scrh-height
+temp1=vel
 
 run = True
 
@@ -35,13 +36,14 @@ yb=y
 vb=15
 hits=0
 
+bg = pygame.image.load('bg1.jpg')
 
 
-# bnana bounce' nahi na ho raha'
-# are 2 blck tch hua to ek block ake pstion ko dur krnah bs karke bata b
+
 
 
 while run:
+
     pygame.time.delay(20)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -50,8 +52,8 @@ while run:
 
     #print("velocity=",vel_obj)
 
-
-    if y1 <= 800 and x1 <= 800:
+    win.blit(bg, [scrh, scrw])
+    if y1 <= scrh and x1 <= scrw:
 
         y1 += vel_obj
         x1 += vel_obj / 2
@@ -62,20 +64,20 @@ while run:
 
         # x1 = random.randint(0, 800 - width)
         # count
-    if y1 >= 799 or y2 >= 799:
+    if y1 >= scrh-2 or y2 >= scrh-2:
         count += 1
     if count >= 20:
         vel_obj += 1
         count = 0
 
-    if y2 <= 800:
+    if y2 <= scrh:
         y2 += vel_obj
 
     else:
         y2 = 0
-        x2 = random.randint(0, 800 - width)
+        x2 = random.randint(0, scrw - width)
 
-    if y1 <= 800 and x1 <= 800:
+    if y1 <= scrh and x1 <= scrw:
         y1 += vel_obj
         x1 += vel_obj / 2
     else:
@@ -83,28 +85,35 @@ while run:
         x1 = 0#random.randint(0, 800 - width)
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_a] and x > vel:  # left right move
+    if keys[pygame.K_a] and x >=width/2:  # left right move
         x -= vel
         xb = int(x + width / 2)
 
 
-    if keys[pygame.K_d] and x < 800 - width - 10:
+    if keys[pygame.K_d] and x < scrw - width - 10:
         x += vel
         xb = int(x + width / 2)
 
 
-    if keys[pygame.K_SPACE]:
+    if keys[pygame.K_SPACE] and yb==y:
         temp=xb
         shoot =True
+
+    if keys[pygame.K_LSHIFT]:
+
+        vel=int(vel/2)
+    else: vel=temp1
+
 
     if shoot:
         #yb=int(800-height)
         yb=yb-vb
         xb=temp
-        if yb<0:
+        if yb<=0:
             yb=y
             xb=int(x+width/2)
             shoot=False
+
 
 
 
@@ -118,24 +127,32 @@ while run:
 
     if x1 >= x and x1 <= x + width and y1 >= y and y1 <= y + height:
         collision+=1
+        y1=0
         print("collsion=",collision)
 
-    elif  x2 >= x and x2 <= x + width and y2 >= y and y2 <= y + height:
+
+    if  x2 >= x-width and x2 <= x + width and y2 >= y and y2 <= y + height:
         collision+=1
         y2=0
         print("collsion=",collision)
 
     #bullet colli
-    if yb>y1 and yb<y1+height and xb>=x1 and xb<=x1+width:
+    if yb>y1 and yb<y1+height and xb>=x1 and xb<=x1+width and yb<y:
         hits=hits+1
+        yb=0
         y1=random.randint(0,400)
-        x1=random.randint(0,800)
+        x1=0#random.randint(0,800-width)
         print("hits=",hits)
-    if yb > y2 and yb < y2 + height and xb >= x2 and xb <= x2 + width:
+        vel_obj+=2
+    if yb > y2 and yb < y2 + height and xb >= x2 and xb <= x2 + width and yb<y:
         hits=hits+1
+        yb=0
         y2=0
-        x2=random.randint(0,800)
+        x2=random.randint(0,scrw-width)
         print("hits=", hits)
+
+
+
 
 
 
@@ -159,18 +176,18 @@ while run:
 
 
     win.fill((255, 255, 255))
+    win.blit(bg, [0, 0])
     pygame.draw.rect(win, (0, 255, 255), (x, y, width, height))  # player
-
-    pygame.draw.rect(win, (255, 0, 0), (x1, y1, width, height))  # slant
+    pygame.draw.rect(win, (random.randint(0,255),random.randint(0,255), random.randint(0,255)), (x1, y1, width, height))  # slant
+    #pygame.draw.rect(win, (255, 0, 0), (x1, y1, width, height))  # slant
 
     pygame.draw.rect(win, (255, 255, 0), (x2, y2, width, height))  # str yello
 
-    pygame.draw.circle(win,(0,0,0),(xb,yb),10)   #bullet
+    pygame.draw.circle(win,(255,255,255),(xb,yb),10)   #bullet
 
     pygame.display.update()
 
-    # pygame.draw.rect(win, (255, 0, 0), (x / 2, y / 2, width / 2, height / 2))
-# stop ni hua? i?are 20 collsionms k baad hua na an, bounce ni ha karte hai wakata
+
 
 
 pygame.quit()
